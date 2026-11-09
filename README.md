@@ -40,13 +40,12 @@ python src/fast_GeoChallenge.py \
   --input-dir problems/premises_demo \
   --output-dir outputs/run_demo \
   --workers 32
+  --layout-trials 8
 ```
 
 CPU 充足时可以增加 `--workers`；默认最多 64 个，使用单层进程池，避免再套一层 64×64 并行。每个任务处理一个前提文本文件。
 
-一期输出 `drafts/gen_N.json`，格式为 `fast_geochallenge_draft_v2`。除原有组题信息外，新增 `GeometrySnapshot`，保存成功图形所有点的坐标和原始形式文本校验值。
-
-重复运行默认复用已有有效草稿；更换输入、种子或美学配置做新实验时使用新的输出目录。
+一期输出 `drafts/gen_N.json`，格式为 `fast_geochallenge_draft_v2`。重复运行默认复用已有有效草稿；更换输入、种子或美学配置做新实验时使用新的输出目录。
 
 ### 3. 二期：从快照发布
 
@@ -56,7 +55,7 @@ python src/complete_fast_GeoChallenge.py \
   --workers 2
 ```
 
-二期默认 2 个进程，自动跳过完整已发布的 JSON+PNG；`--resume` 作为兼容参数仍可使用。中断后执行相同命令即可。
+二期默认 2 个进程，自动跳过完整已发布的 JSON+PNG；中断后执行相同命令即可。
 
 ```text
 outputs/run_demo/
@@ -69,39 +68,9 @@ outputs/run_demo/
   stage2_summary.json
 ```
 
-二期不执行 DDAR，不调用 `Graph.build_problem()` 或 `Graph.copy()`，也不采样新点。它只恢复点，按题面构造已有直线/圆弧并绘图。坐标缺失或损坏会明确报错，不会偷偷回退到随机试探。
+二期不执行 DDAR，不调用 `Graph.build_problem()` 或 `Graph.copy()`，也不采样新点。它只恢复点，按题面构造已有直线/圆弧并绘图。
 
-示意图仍可能因退化的选项辅助线等原因绘制失败。这时可用相同坐标仅画题设结构，并把原因写入 audit；这不是重新建图或重新挑坐标。最终是否允许这类图形降级可根据 audit 做筛选。
-
-`recover_fast_GeoChallenge.py` 现在是同一发布器的兼容入口，不再维护另一套默认反复建图的实现。
-
-## 保存坐标与美学优化
-
-保存坐标不会关闭绘图中的旋转、翻转、圆弧省略、画布适配等操作。
-
-涉及改变自由点或初始形状的美学优化，应在一期求解之前进行。可选示例：
-
-```bash
-python src/fast_GeoChallenge.py \
-  --input-dir problems/premises_demo \
-  --output-dir outputs/run_aesthetic \
-  --workers 16 \
-  --layout-trials 8
-```
-
-该开关复用 `free_params.py` 的独立图形自由参数，以及 `aestheticsEvaluator.py` 的点间排斥、角分辨率、长宽比、边界、均匀度等损失。它在原本成功的布局之外尝试指定数量的完整合法构造，选择损失更低者，然后对选中的图形进行 DDAR，最后保存其坐标。优化失败保留原成功布局。
-
-```text
-首次成功建图
-→ 可选自由参数美学搜索（一期额外成本）
-→ DDAR 与组题
-→ 保存所选图形坐标
-→ 二期从坐标绘制，并作朝向整理
-```
-
-默认 `--layout-trials=0`，即不执行美学搜索。此优化目前针对完整初始构造的布局，不是针对选项确定后的最终题面单独优化；也没有声称所有依赖点的自由度都已参数化。
-
-不要在二期对固定坐标作独立点移动、非等比拉伸等可能改变几何关系的调整。
+示意图可能因退化的选项辅助线等原因绘制失败。这时可用相同坐标仅画题设结构，并把原因写入 audit。最终是否允许这类图形降级可根据 audit 做筛选。
 
 ## 最终题目 JSON：15 个字段
 
