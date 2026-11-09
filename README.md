@@ -13,49 +13,45 @@ python -m pip install -r requirements.txt
 
 没有 GPU 或模型 API 依赖。无显示器服务器可设置 `export MPLBACKEND=Agg`；新的二阶段发布入口已使用 Agg。
 
-## 推荐流程：生成前提 → 一期求解 → 二期发布
+## 流程：生成前提 → 求解 → 发布
 
 ### 1. 前提准备
-
-新建一个小规模缓存示例：
 
 ```bash
 python src/prgenerate.py \
   --run_mode=new \
-  --target_depth=2 \
-  --run_dir=problems/cache_demo \
-  --output_dir=problems/premises_demo
+  --target_depth=12 \
+  --run_dir=problems/cache \
+  --output_dir=problems/premises
 ```
 
-默认 19 个结构模板与 13 个简单根混合生成。`target_depth` 包含末层索引，2 表示生成 depth_0、depth_1、depth_2。
+默认 19 个结构模板与 13 个简单根混合生成。缓存完成后保留；`resume` 从完成层继续，`finalize --export_depth=N` 提取指定深度。最新层不完整时，恢复逻辑会归档它并从上一完整层重做整层。
 
-缓存完成后保留；`resume` 从完成层继续，`finalize --export_depth=N` 提取指定深度。最新层不完整时，恢复逻辑会归档它并从上一完整层重做整层。
+不要把尚未生成完的层通过 `--assume_complete_depth` 标为完成。
 
-不要把尚未生成完的层通过 `--assume_complete_depth` 标为完成。层内文件配套检查不能证明所有父块都已处理；此处保留了原有层级恢复机制，没有迁移现有服务器上的任何缓存。
-
-### 2. 一期：求解、组题并保存成功坐标
+### 2. 求解、组题并保存成功坐标
 
 ```bash
 python src/fast_GeoChallenge.py \
-  --input-dir problems/premises_demo \
-  --output-dir outputs/run_demo \
+  --input-dir problems/premises \
+  --output-dir outputs/run \
   --workers 32
   --layout-trials 8
 ```
 
 CPU 充足时可以增加 `--workers`；默认最多 64 个，使用单层进程池，避免再套一层 64×64 并行。每个任务处理一个前提文本文件。
 
-一期输出 `drafts/gen_N.json`，格式为 `fast_geochallenge_draft_v2`。重复运行默认复用已有有效草稿；更换输入、种子或美学配置做新实验时使用新的输出目录。
+输出 `drafts/gen_N.json`，格式为 `fast_geochallenge_draft_v2`。重复运行默认复用已有有效草稿。
 
-### 3. 二期：从快照发布
+### 3. 发布
 
 ```bash
 python src/complete_fast_GeoChallenge.py \
-  --run-dir outputs/run_demo \
+  --run-dir outputs/run \
   --workers 2
 ```
 
-二期默认 2 个进程，自动跳过完整已发布的 JSON+PNG；中断后执行相同命令即可。
+默认 2 个进程，自动跳过完整已发布的 JSON+PNG；中断后执行相同命令即可。
 
 ```text
 outputs/run_demo/
@@ -67,8 +63,6 @@ outputs/run_demo/
   stage2_failures.jsonl
   stage2_summary.json
 ```
-
-二期不执行 DDAR，不调用 `Graph.build_problem()` 或 `Graph.copy()`，也不采样新点。它只恢复点，按题面构造已有直线/圆弧并绘图。
 
 示意图可能因退化的选项辅助线等原因绘制失败。这时可用相同坐标仅画题设结构，并把原因写入 audit。最终是否允许这类图形降级可根据 audit 做筛选。
 
