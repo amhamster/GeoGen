@@ -1,0 +1,265 @@
+{
+  "version": 1,
+  "description": "P0/P1 完整初始构造模板。每个模板只陈述已有 DSL 构造，不预置待证明结论。",
+  "templates": [
+    {
+      "id": "diameter_circle",
+      "priority": "P0",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b"], "name": "segment", "args": ["a", "b"]},
+        {"points": ["m"], "name": "midpoint", "args": ["m", "a", "b"]},
+        {"points": ["p"], "name": "on_circle", "args": ["p", "m", "a"]},
+        {"points": ["q"], "name": "on_circle", "args": ["q", "m", "a"]}
+      ]
+    },
+    {
+      "id": "kite_perpendicular_bisector",
+      "priority": "P0",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b"], "name": "segment", "args": ["a", "b"]},
+        {"points": ["m"], "name": "midpoint", "args": ["m", "a", "b"]},
+        {"points": ["p"], "name": "on_bline", "args": ["p", "a", "b"]},
+        {"points": ["q"], "name": "on_bline", "args": ["q", "a", "b"]}
+      ]
+    },
+    {
+      "id": "orthocenter_side_reflections",
+      "priority": "P1",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["h"], "name": "orthocenter", "args": ["h", "a", "b", "c"]},
+        {"points": ["m"], "name": "midpoint", "args": ["m", "b", "c"]},
+        {"points": ["i"], "name": "reflect", "args": ["i", "h", "b", "c"]},
+        {"points": ["j"], "name": "mirror", "args": ["j", "h", "m"]},
+        {"points": ["o"], "name": "circle", "args": ["o", "a", "b", "c"]}
+      ]
+    },
+    {
+      "id": "orthic_triangle",
+      "priority": "P1",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["h"], "name": "orthocenter", "args": ["h", "a", "b", "c"]},
+        {"points": ["d"], "name": "foot", "args": ["d", "a", "b", "c"]},
+        {"points": ["e"], "name": "foot", "args": ["e", "b", "c", "a"]},
+        {"points": ["f"], "name": "foot", "args": ["f", "c", "a", "b"]}
+      ]
+    },
+    {
+      "id": "circumcenter_orthic_antiparallel",
+      "priority": "P1",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["o"], "name": "circle", "args": ["o", "a", "b", "c"]},
+        {"points": ["e"], "name": "foot", "args": ["e", "b", "c", "a"]},
+        {"points": ["f"], "name": "foot", "args": ["f", "c", "a", "b"]}
+      ]
+    },
+    {
+      "id": "incircle_excircle_touch_symmetry",
+      "priority": "P1",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["i"], "name": "incenter", "args": ["i", "a", "b", "c"]},
+        {"points": ["j"], "name": "excenter", "args": ["j", "a", "b", "c"]},
+        {"points": ["d"], "name": "foot", "args": ["d", "i", "b", "c"]},
+        {"points": ["e"], "name": "foot", "args": ["e", "j", "b", "c"]},
+        {"points": ["m"], "name": "midpoint", "args": ["m", "b", "c"]}
+      ]
+    },
+    {
+      "id": "incircle_diameter_excircle_collinearity",
+      "priority": "P1",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["i"], "name": "incenter", "args": ["i", "a", "b", "c"]},
+        {"points": ["j"], "name": "excenter", "args": ["j", "a", "b", "c"]},
+        {"points": ["d"], "name": "foot", "args": ["d", "i", "b", "c"]},
+        {"points": ["e"], "name": "foot", "args": ["e", "j", "b", "c"]},
+        {"points": ["f"], "name": "mirror", "args": ["f", "d", "i"]}
+      ]
+    },
+    {
+      "id": "orthocenter_circumcenter_isogonal",
+      "priority": "P1",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["h"], "name": "orthocenter", "args": ["h", "a", "b", "c"]},
+        {"points": ["o"], "name": "circle", "args": ["o", "a", "b", "c"]}
+      ]
+    },
+    {
+      "id": "simson_line",
+      "priority": "P2",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["o"], "name": "circle", "args": ["o", "a", "b", "c"]},
+        {"points": ["p"], "name": "on_circum", "args": ["p", "a", "b", "c"]},
+        {"points": ["x"], "name": "foot", "args": ["x", "p", "b", "c"]},
+        {"points": ["y"], "name": "foot", "args": ["y", "p", "c", "a"]},
+        {"points": ["z"], "name": "foot", "args": ["z", "p", "a", "b"]},
+        {"points": ["h"], "name": "orthocenter", "args": ["h", "a", "b", "c"]},
+        {"points": ["n"], "name": "midpoint", "args": ["n", "p", "h"]}
+      ]
+    },
+    {
+      "id": "trapezoid_diagonal_midline",
+      "priority": "P2",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c", "d"], "name": "trapezoid", "args": ["a", "b", "c", "d"]},
+        {"points": ["p"], "name": "intersection_ll", "args": ["p", "a", "c", "b", "d"]},
+        {"points": ["q"], "name": "intersection_ll", "args": ["q", "a", "d", "b", "c"]},
+        {"points": ["m"], "name": "midpoint", "args": ["m", "a", "b"]},
+        {"points": ["n"], "name": "midpoint", "args": ["n", "c", "d"]},
+        {"points": ["e"], "name": "midpoint", "args": ["e", "a", "c"]},
+        {"points": ["f"], "name": "midpoint", "args": ["f", "b", "d"]}
+      ]
+    },
+    {
+      "id": "antiparallel_chord",
+      "priority": "P2",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["e"], "name": "on_line", "args": ["e", "a", "c"]},
+        {
+          "points": ["d"],
+          "constructions": [
+            {"name": "on_line", "args": ["d", "a", "b"]},
+            {"name": "eqangle3", "args": ["d", "a", "e", "c", "b", "a"]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "midpoint_parallel_projection",
+      "priority": "P2",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b"], "name": "segment", "args": ["a", "b"]},
+        {"points": ["m"], "name": "midpoint", "args": ["m", "a", "b"]},
+        {"points": ["u"], "name": "on_tline", "args": ["u", "a", "a", "b"]},
+        {"points": ["v"], "name": "on_tline", "args": ["v", "b", "a", "b"]},
+        {"points": ["x"], "name": "intersection_lt", "args": ["x", "u", "v", "a", "u", "v"]},
+        {"points": ["y"], "name": "intersection_lt", "args": ["y", "u", "v", "b", "u", "v"]},
+        {"points": ["z"], "name": "intersection_lt", "args": ["z", "u", "v", "m", "u", "v"]}
+      ]
+    },
+    {
+      "id": "square_perpendicular_crosschords",
+      "priority": "P2",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c", "d"], "name": "isquare", "args": ["a", "b", "c", "d"]},
+        {"points": ["e"], "name": "on_line", "args": ["e", "a", "b"]},
+        {"points": ["f"], "name": "on_line", "args": ["f", "c", "d"]},
+        {"points": ["g"], "name": "on_line", "args": ["g", "a", "d"]},
+        {"points": ["h"], "name": "intersection_lt", "args": ["h", "b", "c", "g", "e", "f"]}
+      ]
+    },
+    {
+      "id": "euler_ninepoint_complete",
+      "priority": "P3",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["d", "e", "f", "g"], "name": "centroid", "args": ["d", "e", "f", "g", "a", "b", "c"]},
+        {"points": ["h"], "name": "orthocenter", "args": ["h", "a", "b", "c"]},
+        {"points": ["o"], "name": "circle", "args": ["o", "a", "b", "c"]},
+        {"points": ["i"], "name": "foot", "args": ["i", "a", "b", "c"]},
+        {"points": ["j"], "name": "foot", "args": ["j", "b", "c", "a"]},
+        {"points": ["k"], "name": "foot", "args": ["k", "c", "a", "b"]},
+        {"points": ["l"], "name": "midpoint", "args": ["l", "a", "h"]},
+        {"points": ["m"], "name": "midpoint", "args": ["m", "b", "h"]},
+        {"points": ["n"], "name": "midpoint", "args": ["n", "c", "h"]},
+        {"points": ["p"], "name": "midpoint", "args": ["p", "o", "h"]}
+      ]
+    },
+    {
+      "id": "incenter_excenter_arc_center",
+      "priority": "P3",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["i"], "name": "incenter", "args": ["i", "a", "b", "c"]},
+        {"points": ["j"], "name": "excenter", "args": ["j", "a", "b", "c"]},
+        {"points": ["o"], "name": "circle", "args": ["o", "a", "b", "c"]},
+        {
+          "points": ["m"],
+          "constructions": [
+            {"name": "on_circum", "args": ["m", "a", "b", "c"]},
+            {"name": "on_line", "args": ["m", "a", "i"]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tangent_symmedian",
+      "priority": "P3",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["o"], "name": "circle", "args": ["o", "a", "b", "c"]},
+        {"points": ["x"], "name": "lc_tangent", "args": ["x", "b", "o"]},
+        {"points": ["y"], "name": "lc_tangent", "args": ["y", "c", "o"]},
+        {"points": ["t"], "name": "intersection_ll", "args": ["t", "b", "x", "c", "y"]},
+        {"points": ["k"], "name": "intersection_ll", "args": ["k", "a", "t", "b", "c"]},
+        {"points": ["m"], "name": "midpoint", "args": ["m", "b", "c"]}
+      ]
+    },
+    {
+      "id": "mixtilinear_incircle",
+      "priority": "P3",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["o"], "name": "circle", "args": ["o", "a", "b", "c"]},
+        {"points": ["r"], "name": "incenter", "args": ["r", "a", "b", "c"]},
+        {"points": ["x", "y", "z", "i"], "name": "2l1c", "args": ["x", "y", "z", "i", "c", "b", "a", "o"]},
+        {
+          "points": ["m"],
+          "constructions": [
+            {"name": "on_circum", "args": ["m", "a", "b", "c"]},
+            {"name": "on_line", "args": ["m", "a", "r"]}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "complete_quadrilateral_miquel",
+      "priority": "P3",
+      "enabled": true,
+      "clauses": [
+        {"points": ["a", "b", "c"], "name": "triangle", "args": ["a", "b", "c"]},
+        {"points": ["d"], "name": "eq_triangle", "args": ["d", "b", "c"]},
+        {"points": ["e"], "name": "intersection_ll", "args": ["e", "a", "b", "c", "d"]},
+        {"points": ["f"], "name": "intersection_ll", "args": ["f", "b", "c", "d", "a"]},
+        {"points": ["g"], "name": "circle", "args": ["g", "b", "c", "e"]},
+        {"points": ["h"], "name": "circle", "args": ["h", "a", "b", "f"]},
+        {"points": ["i"], "name": "circle", "args": ["i", "a", "e", "d"]},
+        {"points": ["j"], "name": "circle", "args": ["j", "c", "d", "f"]},
+        {"points": ["m"], "name": "intersection_cc", "args": ["m", "g", "h", "b"]}
+      ]
+    },
+    {
+      "id": "quarter_turn_spiral_similarity",
+      "priority": "P3",
+      "enabled": true,
+      "clauses": [
+        {"points": ["p", "a", "b"], "name": "triangle", "args": ["p", "a", "b"]},
+        {"points": ["c"], "name": "psquare", "args": ["c", "p", "a"]},
+        {"points": ["d"], "name": "psquare", "args": ["d", "p", "b"]}
+      ]
+    }
+  ]
+}
