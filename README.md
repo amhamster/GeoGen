@@ -99,14 +99,14 @@ python src/merge_published_datasets.py \
   --output-dir datasets/merged
 ```
 
-分档与参考抽样默认使用 70/90 标准，每档参考 100 题，也可手动覆盖阈值：
+分档与参考抽样默认使用 80/130 标准，每档参考 100 题，也可手动覆盖阈值：
 
 ```bash
 python src/prepare_difficulty_dataset.py \
   --input-dir datasets/merged \
-  --reference-dir datasets/reference_70_90 \
+  --reference-dir datasets/reference_80_130 \
   --output-dir datasets/Geo \
-  --easy-upper 70 --medium-upper 90 --reference-count 100
+  --easy-upper 80 --medium-upper 130 --reference-count 100
 ```
 
 参考样本仍属于完整数据集，不是独立留出的训练/测试划分。
